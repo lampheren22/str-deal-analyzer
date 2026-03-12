@@ -56,7 +56,7 @@ export default function DashboardPage() {
         </div>
         <Link
           href="/analyze"
-          className="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-lg transition-colors"
+          className="self-start flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-lg transition-colors"
           style={{ background: "#2563EB" }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "#1D4ED8")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#2563EB")}

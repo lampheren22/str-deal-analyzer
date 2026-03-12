@@ -5,7 +5,7 @@ import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend,
 } from "recharts";
-import { TrendingUp, Search, AlertTriangle, CheckCircle, ShieldAlert } from "lucide-react";
+import { TrendingUp, Search, AlertTriangle, CheckCircle, ShieldAlert, SlidersHorizontal } from "lucide-react";
 import { getMarketData, CITY_PROFILES } from "@/lib/mockData";
 import { formatCurrency } from "@/lib/calculations";
 
@@ -25,6 +25,7 @@ export default function SeasonalityPage() {
   const [bedrooms, setBedrooms] = useState(3);
   const [propertyPrice, setPropertyPrice] = useState(500000);
   const [data, setData] = useState<MarketData | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   function analyze() {
     setData(getMarketData(city, bedrooms));
@@ -74,8 +75,25 @@ export default function SeasonalityPage() {
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Understand revenue volatility, break-even thresholds, and seasonal demand patterns</p>
       </div>
 
+      {/* Mobile: compact filter summary */}
+      <div className="flex md:hidden items-center justify-between mb-3">
+        <p className="text-sm" style={{ color: "#64748B" }}>
+          <span className="font-medium" style={{ color: "#0F172A" }}>{city}</span> · {bedrooms} BR · ${(propertyPrice / 1000).toFixed(0)}k
+        </p>
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium"
+          style={showFilters
+            ? { background: "#2563EB", color: "#fff" }
+            : { background: "#fff", color: "#0F172A", border: "1px solid #E2E8F0" }}
+        >
+          <SlidersHorizontal className="w-3.5 h-3.5" />
+          {showFilters ? "Hide" : "Change"}
+        </button>
+      </div>
+
       {/* Filter */}
-      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex flex-wrap items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
+      <div className={`${showFilters ? "block" : "hidden md:block"} bg-white rounded-xl shadow-sm p-5 mb-6 flex flex-wrap items-end gap-4`} style={{ border: "1px solid #E2E8F0" }}>
         <div className="flex-1">
           <label className="field-label">City</label>
           <input
