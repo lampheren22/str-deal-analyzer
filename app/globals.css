@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8f9fa;
-  --foreground: #1a1a1a;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #2563EB;
+  --secondary: #0F172A;
+  --accent: #22C55E;
+  --border: #E2E8F0;
+  --text-secondary: #64748B;
 }
 
 body {
@@ -22,29 +27,125 @@ input[type="number"] {
 
 /* Shared form utilities */
 .input {
-  @apply border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none bg-white focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #0F172A;
+  background: #fff;
+  outline: none;
+  transition: all 0.15s;
+  width: 100%;
+}
+.input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #2563EB;
 }
 
 .field-label {
-  @apply block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5;
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
 }
 
 .input-prefix {
-  @apply flex items-center border border-gray-200 rounded-lg bg-white overflow-hidden focus-within:ring-2 focus-within:ring-gray-900 focus-within:border-transparent;
+  display: flex;
+  align-items: center;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.5rem;
+  background: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.input-prefix:focus-within {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #2563EB;
 }
 .input-prefix > span {
-  @apply px-3 text-gray-400 text-sm border-r border-gray-200 bg-gray-50 py-2.5;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #64748B;
+  border-right: 1px solid #E2E8F0;
+  background: #F8FAFC;
 }
 .input-prefix > input {
-  @apply flex-1 px-3 py-2.5 text-sm text-gray-900 outline-none min-w-0;
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #0F172A;
+  outline: none;
+  min-width: 0;
+  background: transparent;
 }
 
 .input-suffix {
-  @apply flex items-center border border-gray-200 rounded-lg bg-white overflow-hidden focus-within:ring-2 focus-within:ring-gray-900 focus-within:border-transparent;
+  display: flex;
+  align-items: center;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.5rem;
+  background: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.input-suffix:focus-within {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #2563EB;
 }
 .input-suffix > input {
-  @apply flex-1 px-3 py-2.5 text-sm text-gray-900 outline-none min-w-0;
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #0F172A;
+  outline: none;
+  min-width: 0;
+  background: transparent;
 }
 .input-suffix > span {
-  @apply px-3 text-gray-400 text-sm border-l border-gray-200 bg-gray-50 py-2.5;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #64748B;
+  border-left: 1px solid #E2E8F0;
+  background: #F8FAFC;
+}
+
+/* Primary button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #2563EB;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-primary:hover {
+  background: #1D4ED8;
+}
+
+/* Secondary button */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  color: #0F172A;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: 1px solid #E2E8F0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-secondary:hover {
+  background: #F8FAFC;
 }

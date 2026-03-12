@@ -37,12 +37,15 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{totalDeals} deal{totalDeals !== 1 ? "s" : ""} analyzed</p>
+          <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Dashboard</h1>
+          <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>{totalDeals} deal{totalDeals !== 1 ? "s" : ""} analyzed</p>
         </div>
         <Link
           href="/analyze"
-          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-white text-sm font-medium rounded-lg transition-colors"
+          style={{ background: "#2563EB" }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#1D4ED8")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#2563EB")}
         >
           <Plus className="w-4 h-4" />
           New Analysis
@@ -54,38 +57,39 @@ export default function DashboardPage() {
         <StatCard
           label="Total Deals"
           value={String(totalDeals)}
-          icon={<BarChart2 className="w-5 h-5 text-gray-400" />}
+          icon={<BarChart2 className="w-5 h-5" style={{ color: "#64748B" }} />}
         />
         <StatCard
           label="Avg ROI"
           value={totalDeals > 0 ? formatPct(avgRoi) : "—"}
-          icon={<TrendingUp className="w-5 h-5 text-green-400" />}
-          accent="green"
+          icon={<TrendingUp className="w-5 h-5" style={{ color: "#22C55E" }} />}
+          accentColor="#22C55E"
         />
         <StatCard
           label="Total Cash Flow"
           value={totalDeals > 0 ? formatCurrency(totalCashFlow) : "—"}
-          icon={<DollarSign className="w-5 h-5 text-blue-400" />}
-          accent="blue"
+          icon={<DollarSign className="w-5 h-5" style={{ color: "#2563EB" }} />}
+          accentColor="#2563EB"
         />
         <StatCard
           label="Best Score"
           value={bestDeal ? String(bestDeal.results.score) : "—"}
           sub={bestDeal?.inputs.dealName}
-          icon={<Target className="w-5 h-5 text-purple-400" />}
-          accent="purple"
+          icon={<Target className="w-5 h-5" style={{ color: "#8B5CF6" }} />}
+          accentColor="#8B5CF6"
         />
       </div>
 
       {/* Deal Cards */}
       {deals.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <BarChart2 className="w-12 h-12 text-gray-200 mb-4" />
-          <p className="text-gray-500 font-medium">No deals yet</p>
-          <p className="text-gray-400 text-sm mt-1 mb-4">Analyze your first STR investment to get started.</p>
+          <BarChart2 className="w-12 h-12 mb-4" style={{ color: "#E2E8F0" }} />
+          <p className="font-medium" style={{ color: "#64748B" }}>No deals yet</p>
+          <p className="text-sm mt-1 mb-4" style={{ color: "#94A3B8" }}>Analyze your first STR investment to get started.</p>
           <Link
             href="/analyze"
-            className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors"
+            className="px-4 py-2 text-white text-sm font-medium rounded-lg transition-colors"
+            style={{ background: "#2563EB" }}
           >
             Analyze a Deal
           </Link>
@@ -106,27 +110,28 @@ function StatCard({
   value,
   sub,
   icon,
-  accent,
+  accentColor,
 }: {
   label: string;
   value: string;
   sub?: string;
   icon: React.ReactNode;
-  accent?: "green" | "blue" | "purple";
+  accentColor?: string;
 }) {
-  const borderMap = {
-    green: "border-t-2 border-green-400",
-    blue: "border-t-2 border-blue-400",
-    purple: "border-t-2 border-purple-400",
-  };
   return (
-    <div className={`bg-white rounded-xl p-5 shadow-sm border border-gray-100 ${accent ? borderMap[accent] : ""}`}>
+    <div
+      className="bg-white rounded-xl p-5 shadow-sm"
+      style={{
+        border: "1px solid #E2E8F0",
+        borderTop: accentColor ? `2px solid ${accentColor}` : "1px solid #E2E8F0",
+      }}
+    >
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{label}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>{label}</p>
         {icon}
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      {sub && <p className="text-xs text-gray-400 mt-1 truncate">{sub}</p>}
+      <p className="text-2xl font-bold" style={{ color: "#0F172A" }}>{value}</p>
+      {sub && <p className="text-xs mt-1 truncate" style={{ color: "#64748B" }}>{sub}</p>}
     </div>
   );
 }
@@ -146,15 +151,16 @@ function DealCard({
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-gray-200 transition-all"
+      className="bg-white rounded-xl p-5 shadow-sm cursor-pointer transition-all hover:shadow-md"
+      style={{ border: "1px solid #E2E8F0" }}
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="font-semibold text-gray-900 text-base">{inputs.dealName}</h3>
+          <h3 className="font-semibold text-base" style={{ color: "#0F172A" }}>{inputs.dealName}</h3>
           {inputs.location && (
             <div className="flex items-center gap-1 mt-0.5">
-              <MapPin className="w-3 h-3 text-gray-400" />
-              <span className="text-xs text-gray-400">{inputs.location}</span>
+              <MapPin className="w-3 h-3" style={{ color: "#64748B" }} />
+              <span className="text-xs" style={{ color: "#64748B" }}>{inputs.location}</span>
             </div>
           )}
         </div>
@@ -165,33 +171,26 @@ function DealCard({
 
       <div className="grid grid-cols-3 gap-3 mb-3">
         <Metric label="Price" value={formatCurrency(inputs.purchasePrice)} />
-        <Metric
-          label="Cash Flow"
-          value={formatCurrency(results.cashFlow)}
-          positive={results.cashFlow > 0}
-        />
-        <Metric
-          label="ROI"
-          value={formatPct(results.roi)}
-          positive={results.roi >= 25}
-        />
+        <Metric label="Cash Flow" value={formatCurrency(results.cashFlow)} positive={results.cashFlow > 0} />
+        <Metric label="ROI" value={formatPct(results.roi)} positive={results.roi >= 25} />
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-        <div className="flex items-center gap-3 text-xs text-gray-400">
+      <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid #E2E8F0" }}>
+        <div className="flex items-center gap-3 text-xs" style={{ color: "#64748B" }}>
           {inputs.bedrooms > 0 && (
             <span className="flex items-center gap-1">
               <Bed className="w-3 h-3" />
               {inputs.bedrooms} beds
             </span>
           )}
-          {inputs.propertyType && (
-            <span>&middot; {inputs.propertyType}</span>
-          )}
+          {inputs.propertyType && <span>&middot; {inputs.propertyType}</span>}
         </div>
         <button
           onClick={(e) => onDelete(deal.id, e)}
-          className="text-gray-300 hover:text-red-400 transition-colors"
+          className="transition-colors"
+          style={{ color: "#E2E8F0" }}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#EF4444")}
+          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#E2E8F0")}
         >
           <Trash2 className="w-4 h-4" />
         </button>
@@ -201,10 +200,16 @@ function DealCard({
 }
 
 function Metric({ label, value, positive }: { label: string; value: string; positive?: boolean }) {
+  const color =
+    positive !== undefined
+      ? positive
+        ? "#22C55E"
+        : "#EF4444"
+      : "#0F172A";
   return (
     <div>
-      <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">{label}</p>
-      <p className={`text-sm font-semibold ${positive !== undefined ? (positive ? "text-green-600" : "text-red-500") : "text-gray-900"}`}>
+      <p className="text-[10px] uppercase tracking-wider mb-0.5" style={{ color: "#64748B" }}>{label}</p>
+      <p className="text-sm font-semibold" style={{ color }}>
         {positive !== undefined && positive ? "~" : ""}{value}
       </p>
     </div>

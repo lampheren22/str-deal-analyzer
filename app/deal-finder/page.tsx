@@ -38,14 +38,14 @@ export default function DealFinderPage() {
     <div className="p-8">
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <Sparkles className="w-5 h-5 text-yellow-500" />
-          <h1 className="text-2xl font-bold text-gray-900">Deal Finder</h1>
+          <Sparkles className="w-5 h-5" style={{ color: "#F59E0B" }} />
+          <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Deal Finder</h1>
         </div>
-        <p className="text-sm text-gray-500">Estimate if a deal meets MART based on your revenue assumptions</p>
+        <p className="text-sm" style={{ color: "#64748B" }}>Estimate if a deal meets MART based on your revenue assumptions</p>
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-6" style={{ border: "1px solid #E2E8F0" }}>
         <div className="grid grid-cols-3 gap-4 mb-4">
           <div>
             <label className="field-label">City</label>
@@ -54,7 +54,7 @@ export default function DealFinderPage() {
               placeholder="e.g. Gatlinburg, TN"
               value={inputs.city}
               onChange={(e) => set("city", e.target.value)}
-              className="input w-full"
+              className="input"
             />
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function DealFinderPage() {
             <select
               value={inputs.bedrooms}
               onChange={(e) => set("bedrooms", e.target.value)}
-              className="input w-full"
+              className="input"
             >
               <option value="Any">Any</option>
               <option value="1">1</option>
@@ -121,7 +121,10 @@ export default function DealFinderPage() {
         </div>
         <button
           onClick={analyze}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors"
+          className="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-medium rounded-lg transition-colors"
+          style={{ background: "#2563EB" }}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#1D4ED8")}
+          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#2563EB")}
         >
           <Search className="w-4 h-4" />
           Analyze Price Range
@@ -130,35 +133,40 @@ export default function DealFinderPage() {
 
       {/* Results */}
       {results && (
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">Price Range Analysis</h2>
-            <p className="text-xs text-gray-400 mt-0.5">
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden" style={{ border: "1px solid #E2E8F0" }}>
+          <div className="px-6 py-4" style={{ borderBottom: "1px solid #E2E8F0" }}>
+            <h2 className="font-semibold" style={{ color: "#0F172A" }}>Price Range Analysis</h2>
+            <p className="text-xs mt-0.5" style={{ color: "#64748B" }}>
               Based on est. revenue of {formatCurrency(inputs.estAnnualRevenue)}/yr and {inputs.taxRate}% tax rate
             </p>
           </div>
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Purchase Price</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">MART</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Cash Flow</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Tax Savings</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">ROI</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Score</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Good Deal?</th>
+              <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}>
+                {["Purchase Price", "MART", "Cash Flow", "Tax Savings", "ROI", "Score", "Good Deal?"].map((h) => (
+                  <th key={h} className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody>
               {results.map((r) => (
-                <tr key={r.price} className={`${r.isGoodDeal ? "bg-green-50/30" : ""} hover:bg-gray-50/50 transition-colors`}>
-                  <td className="px-6 py-3.5 text-sm font-semibold text-gray-900">{formatCurrency(r.price)}</td>
-                  <td className="px-6 py-3.5 text-sm text-gray-600">{formatCurrency(r.mart)}</td>
-                  <td className={`px-6 py-3.5 text-sm font-medium ${r.cashFlow > 0 ? "text-green-600" : "text-red-500"}`}>
+                <tr
+                  key={r.price}
+                  className="transition-colors"
+                  style={{
+                    borderBottom: "1px solid #F1F5F9",
+                    background: r.isGoodDeal ? "rgba(34,197,94,0.04)" : "transparent",
+                  }}
+                >
+                  <td className="px-6 py-3.5 text-sm font-semibold" style={{ color: "#0F172A" }}>{formatCurrency(r.price)}</td>
+                  <td className="px-6 py-3.5 text-sm" style={{ color: "#64748B" }}>{formatCurrency(r.mart)}</td>
+                  <td className="px-6 py-3.5 text-sm font-medium" style={{ color: r.cashFlow > 0 ? "#22C55E" : "#EF4444" }}>
                     {formatCurrency(r.cashFlow)}
                   </td>
-                  <td className="px-6 py-3.5 text-sm text-green-600">{formatCurrency(r.taxSavings)}</td>
-                  <td className={`px-6 py-3.5 text-sm font-medium ${r.roi >= 25 ? "text-green-600" : "text-gray-600"}`}>
+                  <td className="px-6 py-3.5 text-sm" style={{ color: "#22C55E" }}>{formatCurrency(r.taxSavings)}</td>
+                  <td className="px-6 py-3.5 text-sm font-medium" style={{ color: r.roi >= 25 ? "#22C55E" : "#64748B" }}>
                     {formatPct(r.roi)}
                   </td>
                   <td className="px-6 py-3.5">
@@ -168,9 +176,9 @@ export default function DealFinderPage() {
                   </td>
                   <td className="px-6 py-3.5">
                     {r.isGoodDeal ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <CheckCircle2 className="w-4 h-4" style={{ color: "#22C55E" }} />
                     ) : (
-                      <XCircle className="w-4 h-4 text-gray-300" />
+                      <XCircle className="w-4 h-4" style={{ color: "#E2E8F0" }} />
                     )}
                   </td>
                 </tr>
