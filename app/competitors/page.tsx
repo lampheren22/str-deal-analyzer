@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   ScatterChart, Scatter, Legend,
@@ -21,6 +21,8 @@ export default function CompetitorsPage() {
   function analyze() {
     setData(getMarketData(city, bedrooms));
   }
+
+  useEffect(() => { analyze(); }, []);
 
   const scatterData = data?.competitorListings.map((l) => ({
     x: l.nightlyRate,
@@ -149,7 +151,6 @@ export default function CompetitorsPage() {
                       if (active && payload && payload.length) {
                         return (
                           <div className="bg-white border rounded-lg p-3 shadow-lg text-sm" style={{ borderColor: "#E2E8F0" }}>
-                            <p className="font-semibold" style={{ color: "#0F172A" }}>{payload[2]?.value}</p>
                             <p style={{ color: "#2563EB" }}>Rate: ${payload[0]?.value}/night</p>
                             <p style={{ color: "#22C55E" }}>Occupancy: {payload[1]?.value}%</p>
                           </div>

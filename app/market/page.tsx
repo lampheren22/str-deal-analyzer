@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend,
@@ -68,6 +68,8 @@ export default function MarketPage() {
   function analyze() {
     setData(getMarketData(city, bedrooms));
   }
+
+  useEffect(() => { analyze(); }, []);
 
   return (
     <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
@@ -145,10 +147,12 @@ export default function MarketPage() {
                   <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#64748B" }} axisLine={false} tickLine={false} />
                   <YAxis yAxisId="left" tick={{ fontSize: 11, fill: "#64748B" }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`} />
                   <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: "#64748B" }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `${v}%`} />
+                  <YAxis yAxisId="rate" orientation="right" hide={true} />
                   <Tooltip content={<CustomTooltipRevenue />} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Area yAxisId="left" type="monotone" dataKey="revenue" name="Revenue" stroke="#2563EB" fill="url(#revGrad)" strokeWidth={2} />
                   <Area yAxisId="right" type="monotone" dataKey="occupancy" name="Occupancy" stroke="#22C55E" fill="none" strokeWidth={2} strokeDasharray="4 2" />
+                  <Area yAxisId="rate" type="monotone" dataKey="avgRate" name="Avg Rate" stroke="#F59E0B" fill="none" strokeWidth={1.5} strokeDasharray="3 2" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>

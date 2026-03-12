@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend,
@@ -29,6 +29,8 @@ export default function SeasonalityPage() {
   function analyze() {
     setData(getMarketData(city, bedrooms));
   }
+
+  useEffect(() => { analyze(); }, []);
 
   const mart = propertyPrice / 7.5;
   const avgNightlyRate = data?.avgNightlyRate ?? 250;
