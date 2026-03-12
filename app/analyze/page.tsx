@@ -79,7 +79,7 @@ function AnalyzeContent() {
   }
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -104,9 +104,9 @@ function AnalyzeContent() {
         </div>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Form */}
-        <div className="w-[560px] flex-shrink-0 space-y-5">
+        <div className="w-full md:w-[560px] flex-shrink-0 space-y-5">
           <Section icon={<Home className="w-4 h-4" style={{ color: "#2563EB" }} />} title="Property Details">
             <Field label="Deal Name" icon={null}>
               <input

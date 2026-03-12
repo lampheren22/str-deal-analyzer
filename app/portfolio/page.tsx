@@ -43,7 +43,7 @@ export default function PortfolioPage() {
 
   if (deals.length === 0) {
     return (
-      <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+      <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
         <div className="mb-6">
           <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>My Portfolio</h1>
           <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Track and manage your STR investment deals</p>
@@ -67,7 +67,7 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>My Portfolio</h1>
@@ -85,7 +85,7 @@ export default function PortfolioPage() {
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {[
           { label: "Total Properties", value: String(deals.length), color: "#2563EB", icon: <Briefcase className="w-4 h-4" style={{ color: "#2563EB" }} /> },
           { label: "Total Annual Revenue", value: formatCurrency(totalRevenue), color: "#22C55E", icon: <DollarSign className="w-4 h-4" style={{ color: "#22C55E" }} /> },
@@ -104,7 +104,7 @@ export default function PortfolioPage() {
 
       {/* Charts */}
       {deals.length >= 2 && (
-        <div className="grid grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-xl shadow-sm p-6" style={{ border: "1px solid #E2E8F0" }}>
             <h3 className="text-base font-semibold mb-4" style={{ color: "#0F172A" }}>Revenue by Property</h3>
             <ResponsiveContainer width="100%" height={220}>
@@ -159,7 +159,7 @@ export default function PortfolioPage() {
       )}
 
       {/* Portfolio Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden" style={{ border: "1px solid #E2E8F0" }}>
+      <div className="bg-white rounded-xl shadow-sm overflow-x-auto" style={{ border: "1px solid #E2E8F0" }}>
         <div className="px-6 py-4" style={{ borderBottom: "1px solid #E2E8F0" }}>
           <h3 className="text-base font-semibold" style={{ color: "#0F172A" }}>Portfolio Holdings</h3>
           <p className="text-xs mt-0.5" style={{ color: "#64748B" }}>Best score: <span className="font-semibold" style={{ color: "#22C55E" }}>{bestScore}</span></p>

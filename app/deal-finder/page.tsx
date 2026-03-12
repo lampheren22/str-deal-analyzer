@@ -35,7 +35,7 @@ export default function DealFinderPage() {
   const avgROI = goodDeals.length > 0 ? goodDeals.reduce((s, l) => s + l.roi, 0) / goodDeals.length : 0;
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
           <Zap className="w-5 h-5" style={{ color: "#F59E0B" }} />
@@ -46,8 +46,8 @@ export default function DealFinderPage() {
 
       {/* Filter Bar */}
       <div className="bg-white rounded-xl shadow-sm p-5 mb-6" style={{ border: "1px solid #E2E8F0" }}>
-        <div className="grid grid-cols-5 gap-4 mb-4">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+          <div className="sm:col-span-2">
             <label className="field-label">City</label>
             <input
               list="df-city-list"
@@ -113,7 +113,7 @@ export default function DealFinderPage() {
       ) : (
         <>
           {/* Results Summary */}
-          <div className="flex items-center gap-6 mb-4">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
             <p className="text-sm font-medium" style={{ color: "#0F172A" }}>
               {listings.length} properties found in <span style={{ color: "#2563EB" }}>{city}</span>
             </p>
@@ -132,7 +132,7 @@ export default function DealFinderPage() {
           </div>
 
           {/* Results Table */}
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden" style={{ border: "1px solid #E2E8F0" }}>
+          <div className="bg-white rounded-xl shadow-sm overflow-x-auto" style={{ border: "1px solid #E2E8F0" }}>
             <table className="w-full">
               <thead>
                 <tr style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0" }}>
@@ -193,7 +193,7 @@ export default function DealFinderPage() {
           </div>
 
           {/* Summary Stats */}
-          <div className="mt-4 grid grid-cols-4 gap-4">
+          <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: "Total Deals Found", value: String(listings.length) },
               { label: "Good Deals", value: String(goodDeals.length) },

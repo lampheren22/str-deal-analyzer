@@ -45,9 +45,9 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 md:mb-8">
         <div>
           <h1 className="text-3xl font-bold" style={{ color: "#0F172A" }}>STR Intelligence Platform</h1>
           <p className="text-sm mt-1" style={{ color: "#64748B" }}>
@@ -67,7 +67,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 md:mb-8">
         <StatCard label="Deals Analyzed" value={String(totalDeals)} icon={<BarChart2 className="w-5 h-5" style={{ color: "#64748B" }} />} />
         <StatCard label="Avg Portfolio ROI" value={totalDeals > 0 ? formatPct(avgRoi) : "—"} icon={<TrendingUp className="w-5 h-5" style={{ color: "#22C55E" }} />} accentColor="#22C55E" />
         <StatCard label="Total Tax Savings" value={totalDeals > 0 ? formatCurrency(totalTaxSavings) : "—"} icon={<DollarSign className="w-5 h-5" style={{ color: "#2563EB" }} />} accentColor="#2563EB" />
@@ -75,7 +75,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex flex-wrap items-center gap-2 mb-6 md:mb-8">
         <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>Quick Actions:</p>
         {[
           { href: "/analyze", label: "Analyze New Deal", primary: true },
@@ -104,7 +104,7 @@ export default function DashboardPage() {
             <h2 className="text-base font-semibold" style={{ color: "#0F172A" }}>Recent Deals</h2>
             <Link href="/portfolio" className="text-sm font-medium" style={{ color: "#2563EB" }}>View all →</Link>
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {deals.slice(-3).reverse().map((deal) => (
               <DealCard key={deal.id} deal={deal} onDelete={handleDelete} onClick={() => router.push(`/analyze?id=${deal.id}`)} />
             ))}
@@ -115,7 +115,7 @@ export default function DashboardPage() {
       {/* Platform Modules */}
       <div>
         <h2 className="text-base font-semibold mb-4" style={{ color: "#0F172A" }}>Platform Modules</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {modules.map(({ href, label, icon: Icon, description, color }) => (
             <Link
               key={href}

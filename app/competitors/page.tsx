@@ -31,14 +31,14 @@ export default function CompetitorsPage() {
   })) ?? [];
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Competitor Analysis</h1>
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Benchmark your property against comparable STR listings</p>
       </div>
 
       {/* Filter */}
-      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
+      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex flex-wrap items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
         <div className="flex-1">
           <label className="field-label">City</label>
           <input
@@ -113,7 +113,7 @@ export default function CompetitorsPage() {
           </div>
 
           {/* Two charts */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm p-6" style={{ border: "1px solid #E2E8F0" }}>
               <h3 className="text-base font-semibold mb-4" style={{ color: "#0F172A" }}>Bedroom Count vs Revenue</h3>
               <ResponsiveContainer width="100%" height={250}>

@@ -72,14 +72,14 @@ export default function MarketPage() {
   useEffect(() => { analyze(); }, []);
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Market Analytics</h1>
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Deep-dive STR market intelligence for any U.S. city</p>
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
+      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex flex-wrap items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
         <div className="flex-1">
           <label className="field-label">City</label>
           <input
@@ -122,7 +122,7 @@ export default function MarketPage() {
       ) : (
         <div className="space-y-6">
           {/* Metric Cards */}
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             <MetricCard label="Avg Nightly Rate" value={formatCurrency(data.avgNightlyRate)} sub="per night" accentColor="#2563EB" icon={<DollarSign className="w-4 h-4" style={{ color: "#2563EB" }} />} />
             <MetricCard label="Median Revenue" value={formatCurrency(data.medianRevenue)} sub="annual" accentColor="#22C55E" icon={<TrendingUp className="w-4 h-4" style={{ color: "#22C55E" }} />} />
             <MetricCard label="Top 25% Revenue" value={formatCurrency(data.top25Revenue)} sub="annual" accentColor="#8B5CF6" icon={<Activity className="w-4 h-4" style={{ color: "#8B5CF6" }} />} />
@@ -132,7 +132,7 @@ export default function MarketPage() {
           </div>
 
           {/* Row 2: Monthly Revenue + Distribution */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm p-6" style={{ border: "1px solid #E2E8F0" }}>
               <h3 className="text-base font-semibold mb-4" style={{ color: "#0F172A" }}>Monthly Revenue Trend</h3>
               <ResponsiveContainer width="100%" height={260}>
@@ -184,7 +184,7 @@ export default function MarketPage() {
           </div>
 
           {/* Row 3: Revenue by BR + Occupancy Trend */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm p-6" style={{ border: "1px solid #E2E8F0" }}>
               <h3 className="text-base font-semibold mb-4" style={{ color: "#0F172A" }}>Revenue by Bedroom Count</h3>
               <ResponsiveContainer width="100%" height={250}>

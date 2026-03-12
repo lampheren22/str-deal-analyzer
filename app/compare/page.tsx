@@ -25,7 +25,7 @@ export default function ComparePage() {
   const selectedDeals = selected.map((id) => deals.find((d) => d.id === id)).filter(Boolean) as Deal[];
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Compare Deals</h1>
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Select up to 4 deals to compare side by side</p>

@@ -89,7 +89,7 @@ export default function ExportPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Export Deals</h1>
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Select deals and export as CSV or report</p>

@@ -68,14 +68,14 @@ export default function SeasonalityPage() {
       : { bg: "#FEE2E2", text: "#B91C1C", Icon: ShieldAlert };
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Seasonality & Risk Analysis</h1>
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>Understand revenue volatility, break-even thresholds, and seasonal demand patterns</p>
       </div>
 
       {/* Filter */}
-      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
+      <div className="bg-white rounded-xl shadow-sm p-5 mb-6 flex flex-wrap items-end gap-4" style={{ border: "1px solid #E2E8F0" }}>
         <div className="flex-1">
           <label className="field-label">City</label>
           <input
@@ -125,7 +125,7 @@ export default function SeasonalityPage() {
       ) : (
         <div className="space-y-6">
           {/* Risk Summary Cards */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-xl p-5 shadow-sm" style={{ border: "1px solid #E2E8F0", borderTop: "3px solid #EF4444" }}>
               <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Break-Even Occupancy</p>
               <p className="text-3xl font-bold" style={{ color: "#EF4444" }}>{breakEvenOcc.toFixed(1)}%</p>
@@ -204,7 +204,7 @@ export default function SeasonalityPage() {
           </div>
 
           {/* Monthly Occupancy + Volatility */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm p-6" style={{ border: "1px solid #E2E8F0" }}>
               <h3 className="text-base font-semibold mb-4" style={{ color: "#0F172A" }}>Monthly Occupancy</h3>
               <ResponsiveContainer width="100%" height={220}>
@@ -262,7 +262,7 @@ export default function SeasonalityPage() {
           </div>
 
           {/* Quarterly Summary */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {quarters.map(({ q, avgRev, avgOcc, trend }) => (
               <div key={q} className="bg-white rounded-xl p-5 shadow-sm" style={{ border: "1px solid #E2E8F0" }}>
                 <div className="flex items-center justify-between mb-3">

@@ -41,15 +41,15 @@ export default function PredictPage() {
   const confidencePct = result ? Math.round(result.confidence * 100) : 0;
 
   return (
-    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
+    <div className="p-4 md:p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       <div className="mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "#0F172A" }}>Revenue Predictor</h1>
         <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>ML-powered annual revenue prediction based on property attributes</p>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Input Form */}
-        <div className="w-[480px] flex-shrink-0">
+        <div className="w-full md:w-[480px] flex-shrink-0">
           <div className="bg-white rounded-xl shadow-sm p-6 space-y-4" style={{ border: "1px solid #E2E8F0" }}>
             <div className="flex items-center gap-2 mb-2">
               <Brain className="w-4 h-4" style={{ color: "#2563EB" }} />
