@@ -2,14 +2,54 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, BarChart2, GitCompare, Sparkles, Download, Home } from "lucide-react";
+import {
+  LayoutDashboard, Calculator, Brain, Zap,
+  BarChart3, Trophy, TrendingUp,
+  Briefcase, GitCompare, Download, Home,
+} from "lucide-react";
 
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/analyze", label: "Analyze", icon: BarChart2 },
-  { href: "/compare", label: "Compare", icon: GitCompare },
-  { href: "/deal-finder", label: "Deal Finder", icon: Sparkles },
-  { href: "/export", label: "Export", icon: Download },
+type NavItem = {
+  href: string;
+  label: string;
+  icon: React.ElementType;
+};
+
+type NavGroup = {
+  label: string;
+  items: NavItem[];
+};
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Overview",
+    items: [
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    ],
+  },
+  {
+    label: "Deal Tools",
+    items: [
+      { href: "/analyze", label: "Deal Analyzer", icon: Calculator },
+      { href: "/predict", label: "Revenue Predictor", icon: Brain },
+      { href: "/deal-finder", label: "Deal Finder", icon: Zap },
+    ],
+  },
+  {
+    label: "Market Intel",
+    items: [
+      { href: "/market", label: "Market Analytics", icon: BarChart3 },
+      { href: "/competitors", label: "Competitor Analysis", icon: Trophy },
+      { href: "/seasonality", label: "Seasonality & Risk", icon: TrendingUp },
+    ],
+  },
+  {
+    label: "Portfolio",
+    items: [
+      { href: "/portfolio", label: "My Portfolio", icon: Briefcase },
+      { href: "/compare", label: "Compare", icon: GitCompare },
+      { href: "/export", label: "Export", icon: Download },
+    ],
+  },
 ];
 
 export default function Sidebar() {
@@ -30,43 +70,52 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
-          return (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-              style={
-                active
-                  ? { background: "#2563EB", color: "#fff" }
-                  : { color: "#94A3B8" }
-              }
-              onMouseEnter={(e) => {
-                if (!active) {
-                  (e.currentTarget as HTMLElement).style.background = "#1E293B";
-                  (e.currentTarget as HTMLElement).style.color = "#fff";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!active) {
-                  (e.currentTarget as HTMLElement).style.background = "transparent";
-                  (e.currentTarget as HTMLElement).style.color = "#94A3B8";
-                }
-              }}
-            >
-              <Icon className="w-4 h-4 flex-shrink-0" />
-              {label}
-            </Link>
-          );
-        })}
+      {/* Nav Groups */}
+      <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            <p className="px-3 mb-1.5 text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#475569" }}>
+              {group.label}
+            </p>
+            <div className="space-y-0.5">
+              {group.items.map(({ href, label, icon: Icon }) => {
+                const active = pathname === href || pathname.startsWith(href + "/");
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                    style={
+                      active
+                        ? { background: "#2563EB", color: "#fff" }
+                        : { color: "#94A3B8" }
+                    }
+                    onMouseEnter={(e) => {
+                      if (!active) {
+                        (e.currentTarget as HTMLElement).style.background = "#1E293B";
+                        (e.currentTarget as HTMLElement).style.color = "#fff";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) {
+                        (e.currentTarget as HTMLElement).style.background = "transparent";
+                        (e.currentTarget as HTMLElement).style.color = "#94A3B8";
+                      }
+                    }}
+                  >
+                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Footer */}
       <div className="px-4 py-4" style={{ borderTop: "1px solid #1E293B" }}>
-        <p className="text-[10px]" style={{ color: "#475569" }}>STR Deal Analyzer v1.0</p>
+        <p className="text-[10px]" style={{ color: "#475569" }}>STR Deal Analyzer v2.0</p>
       </div>
     </aside>
   );

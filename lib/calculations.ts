@@ -9,6 +9,7 @@ export function calculateDeal(inputs: DealInputs): DealResults {
     costSegregationCost,
     top25Revenue,
     federalTaxRate,
+    avgNightlyRate,
   } = inputs;
 
   // 1. MART: Minimum Annual Revenue Target
@@ -38,8 +39,15 @@ export function calculateDeal(inputs: DealInputs): DealResults {
   // 8. Deal score (0-100)
   const score = calculateDealScore(roi, cashFlow);
 
-  // 9. Is it a good deal?
+  // 9. Deal rating
+  const dealRating = getDealRating(score);
+
+  // 10. Is it a good deal?
   const isGoodDeal = cashFlow > 0 && roi >= 25;
+
+  // 11. Break-even occupancy
+  const effectiveRate = avgNightlyRate > 0 ? avgNightlyRate : purchasePrice / (7.5 * 365 / (0.6));
+  const breakEvenOccupancy = effectiveRate > 0 ? (mart / (effectiveRate * 365)) * 100 : 0;
 
   return {
     mart,
@@ -51,8 +59,17 @@ export function calculateDeal(inputs: DealInputs): DealResults {
     cashFlow,
     roi,
     score,
+    dealRating,
     isGoodDeal,
+    breakEvenOccupancy,
   };
+}
+
+export function getDealRating(score: number): "Elite Deal" | "Strong Deal" | "Moderate Deal" | "Risky" {
+  if (score >= 90) return "Elite Deal";
+  if (score >= 75) return "Strong Deal";
+  if (score >= 60) return "Moderate Deal";
+  return "Risky";
 }
 
 export function calculateDealScore(roi: number, cashFlow: number): number {
@@ -77,9 +94,19 @@ export function getScoreColor(score: number): string {
 }
 
 export function getScoreBadgeColor(score: number): string {
-  if (score >= 80) return "bg-green-100 text-green-700";
+  if (score >= 90) return "bg-green-100 text-green-700";
+  if (score >= 75) return "bg-blue-100 text-blue-700";
   if (score >= 60) return "bg-yellow-100 text-yellow-700";
   return "bg-red-100 text-red-500";
+}
+
+export function getDealRatingColor(rating: string): { bg: string; text: string } {
+  switch (rating) {
+    case "Elite Deal": return { bg: "#DCFCE7", text: "#15803D" };
+    case "Strong Deal": return { bg: "#DBEAFE", text: "#1D4ED8" };
+    case "Moderate Deal": return { bg: "#FEF9C3", text: "#A16207" };
+    default: return { bg: "#FEE2E2", text: "#B91C1C" };
+  }
 }
 
 export function formatCurrency(value: number): string {

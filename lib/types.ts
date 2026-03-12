@@ -14,6 +14,8 @@ export interface DealInputs {
   location: string;
   propertyType: PropertyType;
   bedrooms: number;
+  bathrooms: number;
+  sqft: number;
 }
 
 export interface DealResults {
@@ -26,7 +28,9 @@ export interface DealResults {
   cashFlow: number;
   roi: number;
   score: number;
+  dealRating: "Elite Deal" | "Strong Deal" | "Moderate Deal" | "Risky";
   isGoodDeal: boolean;
+  breakEvenOccupancy: number;
 }
 
 export interface Deal {

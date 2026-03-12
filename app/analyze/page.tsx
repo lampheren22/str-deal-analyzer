@@ -6,11 +6,12 @@ import { Suspense } from "react";
 import {
   Home, DollarSign, Percent, MapPin, Building2,
   RotateCcw, Save, BarChart2, BadgeCheck, BadgeX,
-  ChevronRight,
+  ChevronRight, CheckCircle2, XCircle, Brain,
 } from "lucide-react";
 import { DealInputs, PropertyType } from "@/lib/types";
-import { calculateDeal, formatCurrency, formatPct, getScoreBadgeColor } from "@/lib/calculations";
+import { calculateDeal, formatCurrency, formatPct, getScoreBadgeColor, getDealRatingColor } from "@/lib/calculations";
 import { saveDeal, getDealById, updateDeal } from "@/lib/storage";
+import { generateExplanation } from "@/lib/aiExplanation";
 
 const DEFAULT_INPUTS: DealInputs = {
   dealName: "",
@@ -25,7 +26,9 @@ const DEFAULT_INPUTS: DealInputs = {
   federalTaxRate: 32,
   location: "",
   propertyType: "",
-  bedrooms: 0,
+  bedrooms: 3,
+  bathrooms: 2,
+  sqft: 1800,
 };
 
 function AnalyzeContent() {
@@ -41,7 +44,10 @@ function AnalyzeContent() {
     if (editId) {
       const deal = getDealById(editId);
       if (deal) {
-        setInputs(deal.inputs);
+        setInputs({
+          ...DEFAULT_INPUTS,
+          ...deal.inputs,
+        });
         setShowResults(true);
       }
     }
@@ -73,7 +79,7 @@ function AnalyzeContent() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8" style={{ background: "#F8FAFC", minHeight: "100vh" }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -140,7 +146,7 @@ function AnalyzeContent() {
               <Field label="Occupancy Rate" icon={<Percent className="w-3.5 h-3.5" style={{ color: "#64748B" }} />}>
                 <SuffixInput suffix="%" type="number" value={inputs.occupancyRate} onChange={(v) => set("occupancyRate", v)} />
               </Field>
-              <Field label="Avg Nightly Rate (Optional)" icon={<DollarSign className="w-3.5 h-3.5" style={{ color: "#64748B" }} />}>
+              <Field label="Avg Nightly Rate" icon={<DollarSign className="w-3.5 h-3.5" style={{ color: "#64748B" }} />}>
                 <PrefixInput prefix="$" type="number" value={inputs.avgNightlyRate} onChange={(v) => set("avgNightlyRate", v)} />
               </Field>
             </div>
@@ -152,7 +158,7 @@ function AnalyzeContent() {
             </Field>
           </Section>
 
-          <Section icon={<MapPin className="w-4 h-4" style={{ color: "#64748B" }} />} title="Optional Details">
+          <Section icon={<MapPin className="w-4 h-4" style={{ color: "#64748B" }} />} title="Property Details">
             <div className="grid grid-cols-2 gap-3">
               <Field label="Property Location" icon={<MapPin className="w-3.5 h-3.5" style={{ color: "#64748B" }} />}>
                 <input
@@ -178,9 +184,17 @@ function AnalyzeContent() {
                 </select>
               </Field>
             </div>
-            <Field label="Bedrooms" icon={null}>
-              <SuffixInput suffix="beds" type="number" value={inputs.bedrooms} onChange={(v) => set("bedrooms", v)} className="w-36" />
-            </Field>
+            <div className="grid grid-cols-3 gap-3">
+              <Field label="Bedrooms" icon={null}>
+                <SuffixInput suffix="beds" type="number" value={inputs.bedrooms} onChange={(v) => set("bedrooms", v)} />
+              </Field>
+              <Field label="Bathrooms" icon={null}>
+                <SuffixInput suffix="baths" type="number" value={inputs.bathrooms} onChange={(v) => set("bathrooms", v)} />
+              </Field>
+              <Field label="Sq. Footage" icon={null}>
+                <SuffixInput suffix="sqft" type="number" value={inputs.sqft} onChange={(v) => set("sqft", v)} />
+              </Field>
+            </div>
           </Section>
         </div>
 
@@ -215,16 +229,26 @@ function AnalyzeContent() {
 
 function ResultsPanel({ inputs, results }: { inputs: DealInputs; results: ReturnType<typeof calculateDeal> }) {
   const badgeColor = getScoreBadgeColor(results.score);
+  const ratingColor = getDealRatingColor(results.dealRating);
+  const explanation = generateExplanation(inputs, results);
 
   return (
     <div className="space-y-4">
       {/* Score + verdict */}
       <div className="bg-white rounded-xl shadow-sm p-5" style={{ border: "1px solid #E2E8F0" }}>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <h2 className="font-semibold" style={{ color: "#0F172A" }}>Deal Analysis</h2>
-          <span className={`text-lg font-bold px-3 py-1 rounded-lg ${badgeColor}`}>
-            Score: {results.score}
-          </span>
+          <div className="flex items-center gap-2">
+            <span
+              className="text-sm font-bold px-3 py-1 rounded-lg"
+              style={{ background: ratingColor.bg, color: ratingColor.text }}
+            >
+              {results.dealRating}
+            </span>
+            <span className={`text-lg font-bold px-3 py-1 rounded-lg ${badgeColor}`}>
+              {results.score}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           {results.isGoodDeal ? (
@@ -253,6 +277,7 @@ function ResultsPanel({ inputs, results }: { inputs: DealInputs; results: Return
             formula={`${formatCurrency(inputs.top25Revenue)} − ${formatCurrency(results.mart)}`}
             valueColor={results.cashFlow > 0 ? "#22C55E" : "#EF4444"}
           />
+          <ResultRow label="Break-Even Occupancy" value={`${results.breakEvenOccupancy.toFixed(1)}%`} formula="MART ÷ (rate × 365)" valueColor={results.breakEvenOccupancy < inputs.occupancyRate ? "#22C55E" : "#EF4444"} />
           <ResultRow label="Down Payment" value={formatCurrency(results.downPaymentAmount)} formula={`${inputs.downPaymentPct}% of ${formatCurrency(inputs.purchasePrice)}`} />
           <ResultRow label="Total Cash Invested" value={formatCurrency(results.totalCashInvested)} />
         </div>
@@ -293,20 +318,71 @@ function ResultsPanel({ inputs, results }: { inputs: DealInputs; results: Return
           <span className="text-xs whitespace-nowrap" style={{ color: "#64748B" }}>25% target</span>
         </div>
       </div>
+
+      {/* AI Deal Analysis */}
+      <div className="bg-white rounded-xl shadow-sm p-5" style={{ border: "1px solid #E2E8F0" }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Brain className="w-4 h-4" style={{ color: "#2563EB" }} />
+          <h3 className="text-sm font-semibold" style={{ color: "#0F172A" }}>AI Deal Analysis</h3>
+          <span
+            className="text-xs font-medium px-2 py-0.5 rounded-full"
+            style={{
+              background: explanation.verdict === "elite" ? "#DCFCE7"
+                : explanation.verdict === "strong" ? "#DBEAFE"
+                : explanation.verdict === "moderate" ? "#FEF9C3"
+                : "#FEE2E2",
+              color: explanation.verdict === "elite" ? "#15803D"
+                : explanation.verdict === "strong" ? "#1D4ED8"
+                : explanation.verdict === "moderate" ? "#A16207"
+                : "#B91C1C",
+            }}
+          >
+            {explanation.verdict.charAt(0).toUpperCase() + explanation.verdict.slice(1)}
+          </span>
+        </div>
+        <p className="text-sm font-medium mb-3" style={{ color: "#0F172A" }}>{explanation.headline}</p>
+
+        {explanation.strengths.length > 0 && (
+          <div className="mb-3">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Strengths</p>
+            <div className="space-y-1.5">
+              {explanation.strengths.map((s, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: "#22C55E" }} />
+                  <p className="text-xs" style={{ color: "#374151" }}>{s}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {explanation.risks.length > 0 && (
+          <div className="mb-3">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Risks</p>
+            <div className="space-y-1.5">
+              {explanation.risks.map((r, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <XCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: "#EF4444" }} />
+                  <p className="text-xs" style={{ color: "#374151" }}>{r}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-3 p-3 rounded-lg" style={{ background: "#F8FAFC", border: "1px solid #E2E8F0" }}>
+          <p className="text-xs font-semibold mb-1" style={{ color: "#64748B" }}>Recommendation</p>
+          <p className="text-xs" style={{ color: "#374151" }}>{explanation.recommendation}</p>
+        </div>
+      </div>
     </div>
   );
 }
 
 function ResultRow({
-  label,
-  value,
-  formula,
-  valueColor = "#0F172A",
+  label, value, formula, valueColor = "#0F172A",
 }: {
-  label: string;
-  value: string;
-  formula?: string;
-  valueColor?: string;
+  label: string; value: string; formula?: string; valueColor?: string;
 }) {
   return (
     <div className="flex items-center justify-between">
@@ -344,50 +420,26 @@ function Field({ label, icon, children }: { label: string; icon: React.ReactNode
 }
 
 function PrefixInput({
-  prefix,
-  value,
-  onChange,
-  type = "text",
-  className = "",
+  prefix, value, onChange, type = "text", className = "",
 }: {
-  prefix: string;
-  value: number | string;
-  onChange: (v: number) => void;
-  type?: string;
-  className?: string;
+  prefix: string; value: number | string; onChange: (v: number) => void; type?: string; className?: string;
 }) {
   return (
     <div className={`input-prefix ${className}`}>
       <span>{prefix}</span>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-      />
+      <input type={type} value={value} onChange={(e) => onChange(parseFloat(e.target.value) || 0)} />
     </div>
   );
 }
 
 function SuffixInput({
-  suffix,
-  value,
-  onChange,
-  type = "text",
-  className = "",
+  suffix, value, onChange, type = "text", className = "",
 }: {
-  suffix: string;
-  value: number | string;
-  onChange: (v: number) => void;
-  type?: string;
-  className?: string;
+  suffix: string; value: number | string; onChange: (v: number) => void; type?: string; className?: string;
 }) {
   return (
     <div className={`input-suffix ${className}`}>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-      />
+      <input type={type} value={value} onChange={(e) => onChange(parseFloat(e.target.value) || 0)} />
       <span>{suffix}</span>
     </div>
   );
